@@ -19,10 +19,10 @@
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
+|  Title      |         FitForge       |
 | System URL  |      link_to_system    |
 | Video Link  |      link_to_video     |
 
 ## Project Summary
 
-This is a summary of the project!
+It is a health-fitness tracking application built to assist users in achieving their diet, nutrition, and physical activity goals. Users can easily log their workouts and meals, track their progress over time, set personalized fitness goals, and receive recommendations based on their personal fitness preferences and achievements. The application itself caters to users looking for personalized solutions to their fitness needs.
