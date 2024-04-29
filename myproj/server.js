@@ -80,26 +80,27 @@ app.post('/signup', function (req, res) {
     });
 });
 
-app.post('/users/profile', function (req, res) {
-    var userId = req.body.userId;
-    var weight = parseFloat(req.body.weight);
-    var height = parseFloat(req.body.height);
+// app.post('/users/profile', function (req, res) {
+//     var userId = req.body.userId;
+//     var weight = parseFloat(req.body.weight);
+//     var height = parseFloat(req.body.height);
 
-    if (weight <= 0 || height <= 0) {
-        res.render('create-profile', { userId: userId, error: 'Weight and height must be greater than zero.' });
-    } else {
+//     console.log9(weight, height);
+//     if (weight <= 0 || height <= 0) {
+//         res.render('create-profile', { userId: userId, error: 'Weight and height must be greater than zero.' });
+//     } else {
 
-        const sql = 'UPDATE Users SET Weight = ?, Height = ? WHERE User_Id = ?';
+//         const sql = 'UPDATE Users SET Weight = ?, Height = ? WHERE User_Id = ?';
 
-        connection.query(sql, [weight, height, userId], function (err, result) {
-            if (err) {
-                res.send(err);
-                return;
-            }
-            res.redirect('/login');
-        });
-    }
-});
+//         connection.query(sql, [weight, height, userId], function (err, result) {
+//             if (err) {
+//                 res.send(err);
+//                 return;
+//             }
+//             res.redirect('/login');
+//         });
+//     }
+// });
 
 app.get('/create-profile', function (req, res) {
     res.render('create-profile', { userId: req.query.userId });
@@ -219,6 +220,10 @@ app.post('/update-profile', function (req, res) {
     }
     const today = new Date().toISOString().slice(0, 10);
     const { weight, height } = req.body;
+    if (weight <= 0 || height <= 0) {
+        res.send('Weight and height must be greater than zero.');
+        return
+    }
     const sql = 'UPDATE Users SET Weight = ?, Height = ? WHERE Name = ?';
     connection.query(sql, [weight, height, req.session.username], function (err, result) {
         if (err) {
@@ -491,7 +496,7 @@ app.post('/update-username', function (req, res) {
     const sql = "CALL UpdateUsername((SELECT User_Id FROM Users WHERE Name = ?), ?)";
     connection.query(sql, [userId, newUsername], function (err, results) {
         if (err) {
-            res.send('Error updating username.');
+            res.send('Username in use select another.');
             return
         }
         req.session.username = newUsername;
