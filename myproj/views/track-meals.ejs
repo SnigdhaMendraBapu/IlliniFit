@@ -69,6 +69,18 @@
             align-items: center;
         }
 
+        .meal-item2 {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .delete-form {
             margin-left: 10px;
         }
@@ -76,6 +88,18 @@
 </head>
 
 <body>
+    <h1>Recommended Foods for Your Goals</h1>
+    <div class="workout-list">
+        <% recommendedFoods.forEach(function(food) { %>
+            <div class="meal-item2">
+                <span>
+                    <%= food.Food_Name %>
+                </span>
+            </div>
+            <% }); %>
+    </div>
+
+
     <h1>Track Your Meals</h1>
     <form action="/add-meal" method="post">
         <input type="hidden" name="logId" value="<%= logId %>">
@@ -97,14 +121,15 @@
             </span>
             <form action="/delete-meal" method="post" class="delete-form">
                 <input type="hidden" name="logId" value="<%= logId %>">
-                <input type="hidden" name="foodId" value="<%= meal.Food_id %>">
+                <input type="hidden" name="foodId" value="<%= meal.Food_Id %>">
                 <button type="submit">Delete</button>
             </form>
         </div>
         <% }); %>
             <div class="button-container">
                 <button onclick="window.location.href='/home'">Back to Home</button>
-                <button onclick="window.location.href='/search-food'">Search Foods</button> <!-- New Button -->
+                <button onclick="window.location.href='/search-food'">Search Foods</button>
+                <!-- New Button -->
             </div>
             <script>
                 $(document).ready(function () {

@@ -61,7 +61,7 @@ app.get('/signup', function (req, res) {
     res.render('signup', { error: null });
 });
 
-// POST to create a new user
+
 app.post('/signup', function (req, res) {
     var name = req.body.username;
     var password = req.body.password;
@@ -293,24 +293,42 @@ app.get('/track-meals', function (req, res) {
     });
 });
 
+
 function renderTrackMealsPage(req, res, logId) {
     const foodSql = `SELECT Food_Id, Name FROM Food ORDER BY Name`;
+    const user = req.session.username;
+
     connection.query(foodSql, function (err, foods) {
         if (err) {
             res.send('Error fetching foods.');
             return;
         }
 
-        const mealsSql = `SELECT m.Log_Id, f.Food_id, f.Name, f.Calories FROM Meals m JOIN Food f ON m.Food_Id = f.Food_Id WHERE m.Log_Id = ?`;
+        const mealsSql = `SELECT m.Log_Id, f.Food_Id, f.Name, f.Calories FROM Meals m JOIN Food f ON m.Food_Id = f.Food_Id WHERE m.Log_Id = ?`;
         connection.query(mealsSql, [logId], function (err, meals) {
             if (err) {
                 res.send('Error fetching meals.');
                 return;
             }
-            res.render('track-meals', { meals: meals, foods: foods, logId: logId });
+
+            const recommendSql = `CALL RecommendFoodsForGoal((SELECT User_Id FROM Users WHERE Name = ?))`;
+            connection.query(recommendSql, [user], function (err, recommendedFoods) {
+                if (err) {
+                    res.send('Error fetching food recommendations.');
+                    return;
+                }
+
+                res.render('track-meals', {
+                    meals: meals,
+                    foods: foods,
+                    logId: logId,
+                    recommendedFoods: recommendedFoods[0]
+                });
+            });
         });
     });
 }
+
 
 
 app.post('/add-meal', function (req, res) {
@@ -338,6 +356,7 @@ app.post('/delete-meal', function (req, res) {
     connection.query(sql, [logId, foodId], function (err, result) {
         if (err) {
             res.send('Error deleting meal.');
+            console.log(err)
             return;
         }
         res.redirect('/track-meals');
