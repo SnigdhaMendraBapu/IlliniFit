@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Track Your Meals</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        h1,
+        h2 {
+            color: #0054a6;
+        }
+
+        form,
+        .button-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        select,
+        button,
+        input[type="number"] {
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #0054a6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff8000;
+        }
+
+        .meal-item {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-form {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Track Your Meals</h1>
+    <form action="/add-meal" method="post">
+        <input type="hidden" name="logId" value="<%= logId %>">
+        <select id="food-select" name="foodId" required>
+            <option></option>
+            <% foods.forEach(function(food) { %>
+                <option value="<%= food.Food_Id %>">
+                    <%= food.Name %>
+                </option>
+                <% }); %>
+        </select>
+        <button type="submit">Add Food</button>
+    </form>
+    <h2>Today's Meals</h2>
+    <% meals.forEach(function(meal) { %>
+        <div class="meal-item">
+            <span class="meal-info">
+                <%= meal.Name %>: <%= meal.Calories %> calories
+            </span>
+            <form action="/delete-meal" method="post" class="delete-form">
+                <input type="hidden" name="logId" value="<%= logId %>">
+                <input type="hidden" name="foodId" value="<%= meal.Food_id %>">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+        <% }); %>
+            <div class="button-container">
+                <button onclick="window.location.href='/home'">Back to Home</button>
+                <button onclick="window.location.href='/search-food'">Search Foods</button> <!-- New Button -->
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('#food-select').select2({
+                        placeholder: "Select or type to search",
+                        allowClear: true
+                    });
+                });
+            </script>
+</body>
+
+</html>

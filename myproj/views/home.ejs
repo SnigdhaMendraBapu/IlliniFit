@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #0054a6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            width: 200px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff8000;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome, <%= username %>!</h1>
+    <h2>Total Calories Consumed: <%= totalCalories %>
+    </h2>
+    <button onclick="location.href='/profile'">Update Weight/Height</button>
+    <button onclick="location.href='/update-username-page'">Update Username</button> <!-- New Button -->
+    <button onclick="location.href='/goals'">Goals</button>
+    <button onclick="location.href='/progress'">Progress</button>
+    <button onclick="location.href='/track-meals'">Track Meals</button>
+    <button onclick="location.href='/track-workouts'">Track Workouts</button>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Progress</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            height: 100vh;
+        }
+
+        .chart-container {
+            width: 600px;
+            height: 400px;
+        }
+
+        button {
+            background-color: #0054a6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Weight Progress</h1>
+    <div class="chart-container">
+        <canvas id="weightChart"></canvas>
+    </div>
+
+    <script>
+        const weightLogs = <%- JSON.stringify(weightLogs) %>;
+        const targetWeight = <%- targetWeight %>;
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        const weightChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weightLogs.map(log => log.Date.substring(0, 10)),
+                datasets: [{
+                    label: 'Weight Log',
+                    data: weightLogs.map(log => log.Weight),
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                }, {
+                    label: 'Target Weight',
+                    data: weightLogs.map(() => targetWeight),
+                    borderColor: 'red',
+                    borderDash: [5, 5]
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    </script>
+    <div class="button-container">
+        <button onclick="window.location.href='/home'">Back to Home</button>
+    </div>
+</body>
+
+</html>
